@@ -33,5 +33,8 @@ private:
                     dfs(board, word, index + 1, x + 1, y, visited) ||
                     dfs(board, word, index + 1, x , y - 1, visited) ||
                     dfs(board, word, index + 1, x , y + 1, visited); //上下左右
+
+        visited[x][y] = false;  //递归回溯，如果ret为true那不影响，若为false则i,j可以继续搜索
+        return ret;
     }
 };
