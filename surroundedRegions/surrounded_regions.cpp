@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void solve(vector<vector<char>> &board) {
+    void solve_0(vector<vector<char>> &board) {
        int m = board.size();
        if(m == 0) return;
        int n = board[0].size();
@@ -43,6 +43,55 @@ public:
 
             if(check(r, c, board)){
                 board[r][c] = '.';  //标记
+                if(check(r - 1, c, board)) //上下左右，找到就加入队列，等待标记
+                    coords.push(std::pair<int, int>(r - 1, c));
+                if(check(r + 1, c, board))
+                    coords.push(std::pair<int, int>(r + 1, c));
+                if(check(r, c - 1, board))
+                    coords.push(std::pair<int, int>(r, c - 1));
+                if(check(r, c + 1, board))
+                    coords.push(std::pair<int, int>(r, c + 1));
+            }
+        }
+    }
+
+
+    void solve(vector<vector<char>> &board){
+        int m = board.size();
+        if(m == 0) return;
+        int n = board[0].size();
+
+        for(int col = 0; col < n; ++col){
+            dfs(board, 0, col);
+            dfs(board, m - 1, col);
+        }
+
+        for(int row = 0; row < m; ++row){
+            dfs(board, row, 0);
+            dfs(board, row, n - 1);
+        }
+
+        for(int i = 0; i < m; ++i)
+            for(int j = 0; j < n; ++j){
+                if(board[i][j] == '.')
+                board[i][j] = 'O';  //如果是能从边界搜索到的o则通过标记来保留
+            else if(board[i][j] == 'O')
+                board[i][j] = 'X';  //非边界可达的o则替换掉
+        }
+    }
+
+    void dfs(vector<vector<char> > &board, int row, int col){
+        stack<pair<int, int>> coords;
+        coords.push(make_pair(row, col));
+
+        while(!coords.empty()){
+            int r = coords.top().first;
+            int c = coords.top().second;
+            coords.pop();
+
+            if(check(r, c, board)){
+                board[r][c] = '.';
+
                 if(check(r - 1, c, board)) //上下左右，找到就加入队列，等待标记
                     coords.push(std::pair<int, int>(r - 1, c));
                 if(check(r + 1, c, board))
