@@ -93,3 +93,23 @@ int main(int argc, char const *argv[])
     cout << s.lengthOfLastWord(str) << endl;
     return 0;
 }
+
+#include <iostream>using namespace std;
+
+int main(){
+  const char *str = "apple\0";
+  const char *it = str;
+  while(*it++)
+  {
+    cout << *it << '_';
+  }}
+
+//output:
+//  p_p_l_e__
+//Notice the missing first character and the extra _ underscore at the end
+////
+
+
+//Binary   Oct  Dec    Hex    Abbr    Unicode  Control char  C Escape code   Name
+//0000000  000  0      00     NUL     ␀       ^@            \0              Null character
+//https://en.wikipedia.org/wiki/ASCII#ASCII_control_code_chart
