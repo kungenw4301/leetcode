@@ -68,6 +68,38 @@ public:
         while(*p == '*') ++p;   //跳过p末端的'*'
         return *s == '\0' && *p == '\0';    //如果p后面还有字符，失配
     }
+
+    //参考：使用switch-case主结构，逻辑清晰，就是 s - 1, p - 1有点绕
+    //http://fisherlei.blogspot.sg/2013/01/leetcode-wildcard-matching.html
+    bool check_match_ii(const char* s, const char* p){
+        bool star = false;   //记录前面有没有遇到'*'
+        const char *str, *ptr;  //这两个才是实际用来比较的指针，而s/p在这里被用作了暂存指针
+        for(str = s, ptr = p; *str != '\0'; ++str, ++ptr){
+            switch(*ptr){
+                case '?':
+                    break;
+                case '*':
+                    star = true; //遇到'*'
+                    s = str, p = ptr; //使用s,p暂存回溯位置，并且继续试探下去
+                    while(*p == '*') ++p; //跳过连续的'*'
+                    if(*p == '\0')  return true; //如果p串是连续'*'，必然匹配
+                    str = s - 1;
+                    ptr = p - 1; //这里s/p后退一位，for循环再加一位，刚好回到比较位置
+                    break;
+                default:
+                    if(*str != *ptr){
+                        //如果前面没有'*'，当前字符失配，全局失配
+                        if(!star) return false;
+                        //s串暂存位置向后一位，视为该失配字符'*'匹配了
+                        ++s;    //暂存位置后移一位，即使回溯也应该回溯到此位置
+                        str = s - 1;
+                        ptr = p - 1;
+                    }
+            }
+        }
+        while(*ptr == '*') ++ptr;   //跳过末尾连续的'*'
+        return (*ptr == '\0');  //s串处理完了，若是p串还有剩余，且不是'*'，失配
+    }
 };
 
 int main(int argc, char const *argv[])
