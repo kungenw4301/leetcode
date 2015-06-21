@@ -35,4 +35,36 @@ public:
         //递归下降处理
         return match_recursion(s, p + 2);
     }
+
+    //参考:http://www.busy-beaver.me/leetcode-10-regular-expression-matching/
+    //dp[i+1][j+1]表示s[0..i]是否匹配p[0..j]
+    //若p[j] != '*'，dp[i+1][j+1] = (s[i] == p[j] || p[j] == '*') && dp[i][j]
+    //若p[j] == '*'
+    //*匹配了0个字符。dp[i+1][j+1] = dp[i+1][j-1]（跳过p[j]的*和*前面的p[j-1]。
+    //*匹配了1个字符。dp[i+1][j+1] = dp[i+1][j]（跳过p[j]的*)
+    //*匹配了2个或2个以上的字符。dp[i+1][j+1] = dp[i][j+1] && (p[j-1] == s[i] || p[j-1] == '.')（s[0..i-1]与p[0..j]匹配，并且p[j-1]与s[i]匹配）
+    bool isMatch_DP(string s, string p){
+        bool dp[s.size()+1][p.size()+1];
+        dp[0][0] = true;    //-1,-1 初始为真
+        for(int i = 1; i <= s.size(); ++i){
+            dp[i][0] = false;   //s串从左到右，p串长度为0
+        }
+
+        //s串为空，p串可以是a******这种连续的'*'，匹配0个字符
+        //注意，单独的'*'也是无效的
+        for(int j = 1; j <= p.size(); j++){
+            dp[0][j] = j > 1 && p[j - 1] == '*' && dp[0][j - 2]; //j > 1 是保证存在a*这种序列
+        }
+
+        for(int i = 0; i < s.size(); ++i)
+            for(int j = 0; j < p.size(); ++j)
+                if(p[j] != '*')
+                    dp[i + 1][j + 1] = (p[j] == '.' || s[i] == p[j]) && dp[i][j];
+                else
+                    dp[i + 1][j + 1] = j > 0 && dp[i + 1][j - 1]
+                                             || dp[i + 1][j]
+                                || j > 0 && (p[j - 1] == '.' || p[j - 1] == s[i]) && dp[i][j+1];
+
+        return dp[s.size()][p.size()]; //s(0, size-1) p(0, size-1)
+    }
 };
