@@ -11,7 +11,7 @@ public:
 
     bool isInterleave_recursion(string s1, int i1, string s2, int i2, string s3, int i3){
         //这个条件不理解
-        //这个条件是错的，亲测："aa", "b", "aba"
+        //这个条件是错的，亲测："aa", "b", "aba"返回竟然得到0，也就是false
         if(i1 < 0 || i2 < 0 || i3 < 0) return i1 < 0 && i2 < 0 && i3 < 0;
         if(s1[i1] == s3[i3] && isInterleave_recursion(s1, i1 - 1, s2, i2, s3, i3 - 1))
             return true; //从s1串末尾划掉一个字母
