@@ -31,5 +31,7 @@ public:
 int main(int argc, char const *argv[])
 {
 	Solution s;
+	int result = s.uniquePaths(3, 7);
+	cout << result << endl;
 	return 0;
 }
