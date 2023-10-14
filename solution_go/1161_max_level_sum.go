@@ -9,12 +9,6 @@ package solution_go
  * }
  */
 
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
-
 func maxLevelSum(root *TreeNode) int {
 	// keep only current level
 	queue := []*TreeNode{root}
