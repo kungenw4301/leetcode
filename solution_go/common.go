@@ -53,3 +53,8 @@ func walkTree(root *TreeNode) {
 		walkTree(root.Right)
 	}
 }
+
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
