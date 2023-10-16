@@ -1,7 +1,10 @@
 package solution_go
 
-import "testing"
-import "github.com/stretchr/testify/assert"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func Test_pathSum(t *testing.T) {
 	treeNum := []interface{}{5, 4, 8, 11, nil, 13, 4, 7, 2, nil, nil, 5, 1}
